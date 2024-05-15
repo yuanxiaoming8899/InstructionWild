@@ -1,97 +1,91 @@
-# Instruction in the Wild: A User-based Instruction Dataset
-
-⚠️ We are currently working on a version that largely transforms this project. We will update this repo as soon as we complete this version.
-
-## News
-
-We release InstructWild v2 under `data v2` dir, which includes over 110K high-quailty user-based instructions. We did not use self-instruct to generate any instructions. We also label a subset of these instructions with instruction type and speical tag. Please see [README](https://github.com/XueFuzhao/InstructionWild/blob/main/data_v2/README.md) for details.
-
-## Introduction
-
-Instruction Tuning is a key component of ChatGPT. OpenAI used their user-based Instruction dataset, but unfortunately, this dataset is not open-sourced. [Self-Instruct](https://github.com/yizhongw/self-instruct) released a small instruction dataset including 175 instructions written by human labors. [Standford Alpaca Team](https://github.com/tatsu-lab/stanford_alpaca) generated 52K instructions by `text-davinci-003` model based on the the 175 seed instructions above.
-
-This project targets on a larger and more diverse instruction dataset. To this end, we collected (110K in v2 dataset, 429 in v1 dataset) instructions from ChatGPT usage sharing and released both English and Chinese versions. We found these instructions are very diverse. We follow [Alpaca](https://github.com/tatsu-lab/stanford_alpaca) to generate 52K instructions and their responses. All data can be found in `data` and `data v2` dir.
-
-Note: This is an ongoing project. We are still collecting and improving our data. We release this dataset as early as possible to speedup our LLM research. We will also release a whitepaper soon.
-
-## Data Release
-
-Our dataset use the same format as [Alpaca](https://github.com/tatsu-lab/stanford_alpaca) for fast and easy usage. Our instructions have no input field.
-
-## Data Collection (InsturctWild v1)
-
-![data_collection](./imgs/data-collect.png)
-
-We scrapt over 700 noisy instructions from Twitter and filter out noisy instructions. We then pick 429 clean insturctions to ensure the high quality.
-
-We use a similar method as Alpaca to collect instructions. However, we do not need outputs for instructions thus avoid human involvement. The prompts generated are more diverse and covers more topics compared to the Alpaca's.
-
-We provide 5 prompts as examples for generating new instructions from OpenAI API. After collecting prompts, we collect responses of these instructions from OpenAI API. The English and Chinese datasets are generated seperately. In total, 880$ are spent to collect the dataset. There are 52K instructions for English (around 24M tokens) and 52K instructions for Chinese.
-
-## How Good is InstructWild?
-
-[Colossal AI](https://colossalai.org/) used our model to train the [ColossalChat](https://github.com/hpcaitech/ColossalAI/tree/main/applications/Chat) model. The ColossalChat-7B (only after stage-1) combines the original alpaca dataset and our dataset. We compare the ColossalChat-7B with Alpaca-7B to see what improvement our dataset brings.
-
-It is difficult to evaluate Chatbot. We human-evaluate several examples under different categories of instructions. Our main findings are:
-
-### Pros
-
-- Our new dataset improves the model's ability in **Generation, Open QA, and Mind Storm instructions**. This corresponds to our data collection process. Our data is collected from Twitter, where users tend to share their interesting prompts of mostly generation, open QA, and mind-storm types.
-
-### Limitations for LLaMA-finetuned models
-
-- Both Alpaca and ColossalChat are based on LLaMA. It is hard to compensate for the missing knowledge in the pre-training stage.
-- Lack of counting ability: Cannot count the number of items in a list.
-- Lack of Logics (reasoning and calculation).
-- Tend to repeat the last sentence (fail to produce the end token).
-- Poor multilingual results: LLaMA is mainly trained on English datasets (Generation performs better than QA).
-
-### Limitations of dataset
-
-- Lack of summarization ability: No such instructions in finetune datasets.
-- Lack of multi-turn chat and role-playing: No such instructions in finetune datasets
-- Lack of self-recognition: No such instructions in finetune datasets
-- Lack of Safety:
-  - When the input contains fake facts, the model makes up false facts and explanations.
-  - Cannot abide by OpenAI's policy: When generating prompts from OpenAI API, it always abides by its policy. So no violation case is in the datasets.
-
-## Detailed Comparison
-
-See [**HERE**](./comparison.md) for detailed comparison.
-
-## TODO
-
-- [x] Dataset v1
-- [x] Dataset v2
-- [x] Fine-grained Labeling (v2)
-- [ ] Larger Dataset
-
-## Authors
-
-This project is maintained by the following authors (currently):
-
-- [Jinjie Ni](http://jinjie.one/)
-- [Fuzhao Xue](https://xuefuzhao.github.io/)
-- [Yuntian Deng](https://yuntiandeng.com/)
-- [Jason Phang](https://jasonphang.com/)
-- [Kabir Jain](https://github.com/ka-bear)
-- [Mahir Hitesh Shah](https://github.com/RottenLemons)
-- [Zangwei Zheng](https://zhengzangw.github.io/)
-- [Prof. Yang You](https://www.comp.nus.edu.sg/~youy/)
-
-We also acknowledge the valuable suggestions from [Prof. Aixin Sun](https://personal.ntu.edu.sg/axsun/), [Dr. Tom Young](https://tomyoung903.github.io/).
-
-## Citation
-
-Please cite the repo if you use the data or code in this repo.
-
-```bibtex
-@misc{instructionwild,
+<div class="Box-sc-g0xbh4-0 bJMeLZ js-snippet-clipboard-copy-unpositioned" data-hpc="true"><article class="markdown-body entry-content container-lg" itemprop="text"><div class="markdown-heading" dir="auto"><h1 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">野外指令：基于用户的指令数据集</font></font></h1><a id="user-content-instruction-in-the-wild-a-user-based-instruction-dataset" class="anchor" aria-label="永久链接：野外指令：基于用户的指令数据集" href="#instruction-in-the-wild-a-user-based-instruction-dataset"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto"><g-emoji class="g-emoji" alias="warning"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">⚠️</font></font></g-emoji><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">我们目前正在开发一个可以很大程度上改变这个项目的版本。一旦完成此版本，我们将立即更新此存储库。</font></font></p>
+<div class="markdown-heading" dir="auto"><h2 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">消息</font></font></h2><a id="user-content-news" class="anchor" aria-label="永久链接：新闻" href="#news"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">我们在 dir 下发布了 InstructWild v2 </font></font><code>data v2</code><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">，其中包含超过 110K 条高质量的基于用户的指令。我们没有使用自指令来生成任何指令。我们还使用指令类型和特殊标签来标记这些指令的子集。</font><font style="vertical-align: inherit;">详细信息</font><font style="vertical-align: inherit;">请参阅</font></font><a href="https://github.com/XueFuzhao/InstructionWild/blob/main/data_v2/README.md"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">自述文件。</font></font></a><font style="vertical-align: inherit;"></font></p>
+<div class="markdown-heading" dir="auto"><h2 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">介绍</font></font></h2><a id="user-content-introduction" class="anchor" aria-label="永久链接：简介" href="#introduction"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">指令调优是 ChatGPT 的关键组成部分。 OpenAI 使用了他们基于用户的指令数据集，但不幸的是，该数据集不是开源的。</font></font><a href="https://github.com/yizhongw/self-instruct"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Self-Instruct</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">发布了一个小型指令数据集，其中包括 175 条由人类编写的指令。</font></font><a href="https://github.com/tatsu-lab/stanford_alpaca"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Standford Alpaca Team</font></font></a><font style="vertical-align: inherit;"></font><code>text-davinci-003</code><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">基于上述 175 条种子指令</font><font style="vertical-align: inherit;">按模型生成了 52K 条指令。</font></font></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">该项目的目标是更大、更多样化的指令数据集。为此，我们从ChatGPT使用分享中收集了（v2数据集110K，v1数据集429）指令，并发布了英文和中文版本。我们发现这些说明非常多样化。我们按照</font></font><a href="https://github.com/tatsu-lab/stanford_alpaca"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Alpaca</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">生成 52K 指令及其响应。所有数据都可以在</font></font><code>data</code><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">和dir</font><font style="vertical-align: inherit;">中找到</font></font><code>data v2</code><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">。</font></font></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">注意：这是一个正在进行的项目。我们仍在收集和改进我们的数据。我们尽早发布此数据集以加快我们的 LLM 研究。我们也将很快发布白皮书。</font></font></p>
+<div class="markdown-heading" dir="auto"><h2 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">数据发布</font></font></h2><a id="user-content-data-release" class="anchor" aria-label="永久链接：数据发布" href="#data-release"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto"><font style="vertical-align: inherit;"></font><a href="https://github.com/tatsu-lab/stanford_alpaca"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">我们的数据集使用与Alpaca</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">相同的格式，</font><font style="vertical-align: inherit;">以便快速、轻松地使用。我们的说明没有输入字段。</font></font></p>
+<div class="markdown-heading" dir="auto"><h2 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">数据收集（InsturctWild v1）</font></font></h2><a id="user-content-data-collection-insturctwild-v1" class="anchor" aria-label="永久链接：数据收集 (InsturctWild v1)" href="#data-collection-insturctwild-v1"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto"><a target="_blank" rel="noopener noreferrer" href="/XueFuzhao/InstructionWild/blob/main/imgs/data-collect.png"><img src="/XueFuzhao/InstructionWild/raw/main/imgs/data-collect.png" alt="数据采集" style="max-width: 100%;"></a></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">我们从 Twitter 中删除了 700 多个噪音指令，并过滤掉了噪音指令。然后我们挑选了429个清洁指令以确保高质量。</font></font></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">我们使用与Alpaca类似的方法来收集指令。然而，我们不需要指令输出，因此避免了人类的参与。与 Alpaca 相比，生成的提示更加多样化，涵盖更多主题。</font></font></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">我们提供了 5 个提示作为从 OpenAI API 生成新指令的示例。收集提示后，我们从 OpenAI API 收集这些指令的响应。英文和中文数据集是分开生成的。收集数据集总共花费了 880 美元。英语有 52K 条指令（大约 24M 标记），中文有 52K 条指令。</font></font></p>
+<div class="markdown-heading" dir="auto"><h2 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">InstructWild 有多好？</font></font></h2><a id="user-content-how-good-is-instructwild" class="anchor" aria-label="永久链接：InstructWild 有多好？" href="#how-good-is-instructwild"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto"><a href="https://colossalai.org/" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Colossal AI</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">使用我们的模型来训练</font></font><a href="https://github.com/hpcaitech/ColossalAI/tree/main/applications/Chat"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">ColossalChat</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">模型。 ColossalChat-7B（仅在第一阶段之后）结合了原始羊驼数据集和我们的数据集。我们将 ColossalChat-7B 与 Alpaca-7B 进行比较，看看我们的数据集带来了哪些改进。</font></font></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">评估聊天机器人是很困难的。我们在不同类别的指令下对几个示例进行人工评估。我们的主要发现是：</font></font></p>
+<div class="markdown-heading" dir="auto"><h3 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">优点</font></font></h3><a id="user-content-pros" class="anchor" aria-label="永久链接：优点" href="#pros"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<ul dir="auto">
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">我们的新数据集提高了模型在</font></font><strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">生成、开放 QA 和思维风暴指令方面</font></font></strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">的能力。这对应于我们的数据收集过程。我们的数据是从 Twitter 收集的，用户倾向于分享他们有趣的提示，主要是生成、开放 QA 和头脑风暴类型。</font></font></li>
+</ul>
+<div class="markdown-heading" dir="auto"><h3 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">LLaMA 微调模型的限制</font></font></h3><a id="user-content-limitations-for-llama-finetuned-models" class="anchor" aria-label="永久链接：LLaMA 微调模型的限制" href="#limitations-for-llama-finetuned-models"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<ul dir="auto">
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Alpaca 和 ColossalChat 都是基于 LLaMA 的。预训练阶段缺失的知识很难弥补。</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">缺乏计数能力：无法计算列表中的项目数量。</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">缺乏逻辑（推理和计算）。</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">倾向于重复最后一句话（无法产生结束标记）。</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">多语言结果不佳：LLaMA 主要在英语数据集上进行训练（Generation 的表现优于 QA）。</font></font></li>
+</ul>
+<div class="markdown-heading" dir="auto"><h3 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">数据集的局限性</font></font></h3><a id="user-content-limitations-of-dataset" class="anchor" aria-label="永久链接：数据集的局限性" href="#limitations-of-dataset"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<ul dir="auto">
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">缺乏总结能力：finetune 数据集中没有这样的指令。</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">缺乏多回合聊天和角色扮演：finetune 数据集中没有此类指令</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">缺乏自我识别：finetune 数据集中没有这样的指令</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">缺乏安全性：
+</font></font><ul dir="auto">
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">当输入包含虚假事实时，模型会编造虚假事实和解释。</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">无法遵守 OpenAI 的政策：当从 OpenAI API 生成提示时，它始终遵守其政策。因此数据集中不存在违规案例。</font></font></li>
+</ul>
+</li>
+</ul>
+<div class="markdown-heading" dir="auto"><h2 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">详细比较</font></font></h2><a id="user-content-detailed-comparison" class="anchor" aria-label="永久链接：详细比较" href="#detailed-comparison"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">详细比较</font><font style="vertical-align: inherit;">请参见</font></font><a href="/XueFuzhao/InstructionWild/blob/main/comparison.md"><strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">此处。</font></font></strong></a><font style="vertical-align: inherit;"></font></p>
+<div class="markdown-heading" dir="auto"><h2 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">去做</font></font></h2><a id="user-content-todo" class="anchor" aria-label="永久链接：待办事项" href="#todo"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<ul class="contains-task-list">
+<li class="task-list-item"><input type="checkbox" id="" disabled="" class="task-list-item-checkbox" checked=""><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">数据集 v1</font></font></li>
+<li class="task-list-item"><input type="checkbox" id="" disabled="" class="task-list-item-checkbox" checked=""><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">数据集v2</font></font></li>
+<li class="task-list-item"><input type="checkbox" id="" disabled="" class="task-list-item-checkbox" checked=""><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">细粒度标签 (v2)</font></font></li>
+<li class="task-list-item"><input type="checkbox" id="" disabled="" class="task-list-item-checkbox"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">更大的数据集</font></font></li>
+</ul>
+<div class="markdown-heading" dir="auto"><h2 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">作者</font></font></h2><a id="user-content-authors" class="anchor" aria-label="永久链接：作者" href="#authors"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">该项目由以下作者维护（目前）：</font></font></p>
+<ul dir="auto">
+<li><a href="http://jinjie.one/" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">倪金杰</font></font></a></li>
+<li><a href="https://xuefuzhao.github.io/" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">薛福兆</font></font></a></li>
+<li><a href="https://yuntiandeng.com/" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">邓云天</font></font></a></li>
+<li><a href="https://jasonphang.com/" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">贾森·彭</font></font></a></li>
+<li><a href="https://github.com/ka-bear"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">卡比尔·贾因</font></font></a></li>
+<li><a href="https://github.com/RottenLemons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">马希尔·希特什·沙阿</font></font></a></li>
+<li><a href="https://zhengzangw.github.io/" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">郑藏伟</font></font></a></li>
+<li><a href="https://www.comp.nus.edu.sg/~youy/" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">尤阳教授</font></font></a></li>
+</ul>
+<p dir="auto"><font style="vertical-align: inherit;"></font><a href="https://personal.ntu.edu.sg/axsun/" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">我们也感谢孙爱新教授</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">、</font></font><a href="https://tomyoung903.github.io/" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Tom Young博士</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">提出的宝贵建议</font><font style="vertical-align: inherit;">。</font></font></p>
+<div class="markdown-heading" dir="auto"><h2 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">引文</font></font></h2><a id="user-content-citation" class="anchor" aria-label="永久链接：引文" href="#citation"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">如果您使用此存储库中的数据或代码，请引用该存储库。</font></font></p>
+<div class="highlight highlight-text-bibtex notranslate position-relative overflow-auto" dir="auto"><pre><span class="pl-k">@misc</span>{<span class="pl-en">instructionwild</span>,
+  <span class="pl-s">author</span> = <span class="pl-s"><span class="pl-pds">{</span>Jinjie Ni and Fuzhao Xue and Yuntian Deng and Jason Phang and Kabir Jain and Mahir Hitesh Shah and Zangwei Zheng and Yang You <span class="pl-pds">}</span></span>,
+  <span class="pl-s">title</span> = <span class="pl-s"><span class="pl-pds">{</span>Instruction in the Wild: A User-based Instruction Dataset<span class="pl-pds">}</span></span>,
+  <span class="pl-s">year</span> = <span class="pl-s"><span class="pl-pds">{</span>2023<span class="pl-pds">}</span></span>,
+  <span class="pl-s">publisher</span> = <span class="pl-s"><span class="pl-pds">{</span>GitHub<span class="pl-pds">}</span></span>,
+  <span class="pl-s">journal</span> = <span class="pl-s"><span class="pl-pds">{</span>GitHub repository<span class="pl-pds">}</span></span>,
+  <span class="pl-s">howpublished</span> = <span class="pl-s"><span class="pl-pds">{</span>\url{https://github.com/XueFuzhao/InstructionWild}<span class="pl-pds">}</span></span>,
+}</pre><div class="zeroclipboard-container">
+    <clipboard-copy aria-label="Copy" class="ClipboardButton btn btn-invisible js-clipboard-copy m-2 p-0 tooltipped-no-delay d-flex flex-justify-center flex-items-center" data-copy-feedback="Copied!" data-tooltip-direction="w" value="@misc{instructionwild,
   author = {Jinjie Ni and Fuzhao Xue and Yuntian Deng and Jason Phang and Kabir Jain and Mahir Hitesh Shah and Zangwei Zheng and Yang You },
   title = {Instruction in the Wild: A User-based Instruction Dataset},
   year = {2023},
   publisher = {GitHub},
   journal = {GitHub repository},
   howpublished = {\url{https://github.com/XueFuzhao/InstructionWild}},
-}
-```
+}" tabindex="0" role="button">
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-copy js-clipboard-copy-icon">
+    <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
+</svg>
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-check js-clipboard-check-icon color-fg-success d-none">
+    <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
+</svg>
+    </clipboard-copy>
+  </div></div>
+</article></div>
